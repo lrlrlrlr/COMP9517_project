@@ -30,7 +30,7 @@ import matplotlib.pyplot as plt
 # load the images
 from ultilities import *
 
-imgs,img_labels = surf_features()
+imgs,img_labels = hog_img(True)
 X_train,X_test,y_train,y_test = train_test_split(imgs,img_labels, test_size=0.25, shuffle=True)
 
 # preprocessing
@@ -42,15 +42,7 @@ X_train,X_test,y_train,y_test = train_test_split(imgs,img_labels, test_size=0.25
 # compare different clf
 classifiers = [
     KNeighborsClassifier(3),
-    SVC(gamma=2, C=1),
-    GaussianProcessClassifier(1.0 * RBF(1.0)),
-    DecisionTreeClassifier(max_depth=5),
-    RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1),
-    MLPClassifier(alpha=1, max_iter=1000),
-    AdaBoostClassifier(),
-    GaussianNB(),
-    QuadraticDiscriminantAnalysis()
-    ]
+    SVC(gamma=2, C=1)]
 
 classifier_accuracy_list = []
 for i, classifier in enumerate(classifiers):
