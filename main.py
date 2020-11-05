@@ -28,8 +28,11 @@ from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
 import matplotlib.pyplot as plt
 # load the images
-from ultilities import imgs,img_labels
-X_train,X_test,y_train,y_test = train_test_split(imgs,img_labels, test_size=0.25, shuffle=True)
+from ultilities import *
+for size in [50,100,200,300]:
+    print('Resize the image to: {}*{}'.format(size,size))
+    imgs,img_labels = resize_img((size,size))
+    X_train,X_test,y_train,y_test = train_test_split(imgs,img_labels, test_size=0.25, shuffle=True)
 
     # preprocessing
     # get the features(in same dimension) imagearray + metadata
