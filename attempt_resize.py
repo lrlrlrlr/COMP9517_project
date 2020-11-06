@@ -7,6 +7,8 @@
 # import
 
 # load the images
+from sklearn.model_selection import train_test_split
+
 from ultilities import *
 
 for seg in [True, False]:
@@ -25,7 +27,7 @@ for seg in [True, False]:
         print("accuracy:\t", accuracy_score(y_test, predictions))
         print("recall:\t\t", recall_score(y_test, predictions, average='macro'))
 
-        from sklearn.metrics import roc_auc_score
+        from sklearn.metrics import roc_auc_score, accuracy_score, recall_score
 
         y_scores = clf.decision_function(X_test)
         print("AUC:", roc_auc_score(y_test, y_scores))

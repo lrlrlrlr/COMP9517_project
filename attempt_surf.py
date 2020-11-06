@@ -6,6 +6,8 @@
 # import
 
 # load the images
+from sklearn.model_selection import train_test_split
+
 from ultilities import *
 
 if __name__ == '__main__':
@@ -17,13 +19,13 @@ if __name__ == '__main__':
         X_train, X_test, y_train, y_test = train_test_split(np.array(imgs), np.array(img_labels), test_size=0.25,
                                                             shuffle=True, random_state=10)
 
-        clf = RandomForestClassifier()
+        clf = SVC()
         clf.fit(X_train, y_train)
         predictions = clf.predict(X_test)
         print("accuracy:\t", accuracy_score(y_test, predictions))
         print("recall:\t\t", recall_score(y_test, predictions, average='macro'))
 
-        from sklearn.metrics import roc_auc_score
+        from sklearn.metrics import roc_auc_score, accuracy_score, recall_score
 
         y_scores = clf.decision_function(X_test)
         print("AUC:", roc_auc_score(y_test, y_scores))

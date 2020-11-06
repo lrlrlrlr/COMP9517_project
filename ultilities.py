@@ -148,8 +148,4 @@ def compare_diff_models(X, y):
 
 
 if __name__ == '__main__':
-    # X, y = hog_img()
-    img = cv.imread(path_toba + '\\' + toba_filenames[0], 0)
-    img_resized = cv.resize(img, (300, 300))
-
-    X, y = surf_features()
+    pass
