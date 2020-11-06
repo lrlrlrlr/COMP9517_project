@@ -15,6 +15,10 @@ from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 from skimage.feature import hog
 import matplotlib.pyplot as plt
+from sklearn.exceptions import DataConversionWarning
+import warnings
+from sklearn.exceptions import DataConversionWarning
+warnings.filterwarnings(action='ignore', category=DataConversionWarning)
 
 # load the images
 path_arab = "D:\OneDrive - UNSW\COMP9517\project\Plant\Ara2013-Canon"
@@ -73,17 +77,28 @@ def hog_img(segmented=True):
         labels_is_tobbaco.append(False)
     return np.array(features),np.array(labels_is_tobbaco)
 
-def surf_features(hessianThreshold=1000):
+def surf_features(hessianThreshold=1000, segmented=True):
+    if segmented:
+        filenames = toba_filenames_segmented
+        path = path_toba_segmented
+    else:
+        filenames = toba_filenames
+        path = path_toba
+
     features = []
     labels_is_tobbaco = []
 
     surf = cv.xfeatures2d.SURF_create(hessianThreshold)
 
-    for filename in toba_filenames:
-        img = cv.imread(path_toba + '\\' + filename, 0)
+    for filename in filenames:
+        img = cv.imread(path + '\\' + filename, 0)
         kp, des = surf.detectAndCompute(img, None)
-        features.append(des[:5].flatten())
-        labels_is_tobbaco.append(True)
+        try:
+            if len(des[:5].flatten()) == 320:
+                features.append(des[:5].flatten())
+                labels_is_tobbaco.append(True)
+        except TypeError:
+            pass
 
     for filename in arab_filenames:
         img = cv.imread(path_arab + '\\' + filename, 0)
@@ -91,7 +106,7 @@ def surf_features(hessianThreshold=1000):
         features.append(des[:5].flatten())
         labels_is_tobbaco.append(False)
 
-    return np.array(features),np.array(labels_is_tobbaco)
+    return features,labels_is_tobbaco
 
 def split_data(X,y,split_percentage=0.75):
     split_point = int(len(X) * split_percentage)
