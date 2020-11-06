@@ -1,56 +1,33 @@
-# import
-import cv2 as cv
-import os
-from sklearn.neighbors import KNeighborsClassifier
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import precision_score, accuracy_score, recall_score
-from sklearn.metrics import confusion_matrix
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import cross_val_score
-from sklearn.naive_bayes import GaussianNB
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.datasets import make_moons, make_circles, make_classification
-from sklearn.neural_network import MLPClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.svm import SVC
-from sklearn.gaussian_process import GaussianProcessClassifier
-from sklearn.gaussian_process.kernels import RBF
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
-import warnings
+# COMP9517 PROJECT - INDIVIDUAL PART
+# attempt_surf.py train model with SURF
+# AUTHOR: Rui Li
+# Email: z5202952@ad.unsw.edu.au
 
-import matplotlib.pyplot as plt
+# import
+
 # load the images
 from ultilities import *
 
-
-
-
 if __name__ == '__main__':
-    # for n in [1000,500,1500]:
-    #     print("hessianThreshold: ", n)
-    imgs, img_labels = surf_features(segmented=True)
-    X_train, X_test, y_train, y_test = train_test_split(np.array(imgs), np.array(img_labels), test_size=0.25,
-                                                        shuffle=True)
+    for n in [1000]:
+        print("hessianThreshold: ", n)
+        # for seg in [True, False]:
+        #     print("segmented: ", seg)
+        imgs, img_labels = surf_features(n, segmented=True)
+        X_train, X_test, y_train, y_test = train_test_split(np.array(imgs), np.array(img_labels), test_size=0.25,
+                                                            shuffle=True, random_state=10)
 
-    clf = SVC()
-    clf.fit(X_train, y_train)
-    predictions = clf.predict(X_test)
-    print("accuracy:\t", accuracy_score(y_test, predictions))
-    print("recall:\t\t", recall_score(y_test, predictions, average='macro'))
+        clf = RandomForestClassifier()
+        clf.fit(X_train, y_train)
+        predictions = clf.predict(X_test)
+        print("accuracy:\t", accuracy_score(y_test, predictions))
+        print("recall:\t\t", recall_score(y_test, predictions, average='macro'))
 
-    from sklearn.metrics import roc_auc_score
-    y_scores = clf.decision_function(X_test)
-    print("AUC:", roc_auc_score(y_test, y_scores))
+        from sklearn.metrics import roc_auc_score
 
-    from sklearn.metrics import f1_score
+        y_scores = clf.decision_function(X_test)
+        print("AUC:", roc_auc_score(y_test, y_scores))
 
-    print("f1:", f1_score(y_test, predictions, zero_division=1))
+        from sklearn.metrics import f1_score
+
+        print("f1:", f1_score(y_test, predictions, zero_division=1))
