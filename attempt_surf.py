@@ -32,32 +32,6 @@ import matplotlib.pyplot as plt
 from ultilities import *
 
 
-def compare_diff_models(X, y):
-    # # train models
-    # # compare different clf
-    classifiers = [
-        KNeighborsClassifier(),
-        SVC(),
-        GaussianProcessClassifier(1.0 * RBF(1.0)),
-        DecisionTreeClassifier(),
-        RandomForestClassifier(),
-        MLPClassifier(),
-        AdaBoostClassifier(),
-        GaussianNB(),
-        QuadraticDiscriminantAnalysis()
-    ]
-
-    classifier_accuracy_list = []
-    for i, classifier in enumerate(classifiers):
-        # split the dataset into 5 folds; then test the classifier against each fold one by one
-        accuracies = cross_val_score(classifier, X, y.ravel(), cv=5)
-        classifier_accuracy_list.append((accuracies.mean(), type(classifier).__name__))
-
-    # sort the classifiers
-    # classifier_accuracy_list = sorted(classifier_accuracy_list, reverse=True)
-    classifier_accuracy_list = sorted(classifier_accuracy_list, reverse=True)
-    for item in classifier_accuracy_list:
-        print(item[1], ':', item[0])
 
 
 if __name__ == '__main__':
