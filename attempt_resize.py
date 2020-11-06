@@ -37,3 +37,17 @@ for size in [50]:
     X_train, X_test, y_train, y_test = train_test_split(imgs, img_labels, test_size=0.25, shuffle=True)
 
     # compare_diff_models(imgs, img_labels)
+
+    clf = SVC()
+    clf.fit(X_train, y_train)
+    predictions = clf.predict(X_test)
+    print("accuracy:\t", accuracy_score(y_test, predictions))
+    print("recall:\t\t", recall_score(y_test, predictions, average='macro'))
+
+    from sklearn.metrics import roc_auc_score
+    y_scores = clf.decision_function(X_test)
+    print("AUC:", roc_auc_score(y_test, y_scores))
+
+    from sklearn.metrics import f1_score
+
+    print("f1:", f1_score(y_test, predictions, zero_division=1))
